@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * @long counter: A unique counter that is incremented with each match. This ensures that each match
- *                receives a unique start time, even if multiple matches are started at the same exact millisecond.
+ * receives a unique start time, even if multiple matches are started at the same exact millisecond.
  */
 public class ScoreBoard {
     private final List<Match> matches;
@@ -28,8 +29,8 @@ public class ScoreBoard {
      * @long startTime generates a unique start time based on the counter
      */
     public void startMatch(String homeTeam, String awayTeam) {
-        if (matches.stream().anyMatch(m -> m.getHomeTeam().equals(homeTeam) && m.getAwayTeam().equals(awayTeam)))
-            throw new MatchAlreadyExistsException("This Match is already in progress.");
+        ValidatorUtils.validateNonNullOrEmpty(homeTeam, awayTeam, "Teams' name cannot be empty.");
+        ValidatorUtils.validateInProgressMatch(matches, homeTeam, awayTeam, "This Match is already in progress.");
 
         long startTime = System.currentTimeMillis() + counter++;
         Match match = new Match(homeTeam, awayTeam, startTime);

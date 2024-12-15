@@ -88,6 +88,14 @@ class ScoreBoardTest {
     }
 
     @Test
+    void grayTestStartMatch_nullTeamName_shouldThrowException() {
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            scoreboard.startMatch("", "Canada");
+        });
+        assertEquals("Teams' name cannot be empty.", thrown.getMessage());
+    }
+
+    @Test
     void grayTestUpdateScore_negativeScores() {
         scoreboard.startMatch("Mexico", "Canada");
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
