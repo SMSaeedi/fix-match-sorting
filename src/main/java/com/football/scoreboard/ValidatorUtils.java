@@ -15,4 +15,9 @@ public interface ValidatorUtils {
         if (matches.stream().anyMatch(m -> m.getHomeTeam().equals(homeTeam) && m.getAwayTeam().equals(awayTeam)))
             throw new MatchAlreadyExistsException(errorMessage);
     }
+
+    static void validatePositiveInteger(int homeTeam, int awayTeam, String errorMessage) {
+        if (homeTeam < 0 || awayTeam < 0)
+            throw new IllegalArgumentException(errorMessage);
+    }
 }

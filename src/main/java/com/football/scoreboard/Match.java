@@ -39,8 +39,7 @@ public class Match {
      * @throws IllegalArgumentException if any of the team scores is negative
      */
     public void updateScore(int homeScore, int awayScore) {
-        if (homeScore < 0 || awayScore < 0)
-            throw new IllegalArgumentException("Scores cannot be negative.");
+        ValidatorUtils.validatePositiveInteger(homeScore, awayScore, "Scores cannot be negative.");
 
         this.homeScore = homeScore;
         this.awayScore = awayScore;
