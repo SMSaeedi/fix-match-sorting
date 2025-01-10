@@ -2,6 +2,7 @@ package com.football.scoreboard;
 
 import com.football.scoreboard.exceptions.MatchAlreadyExistsException;
 import com.football.scoreboard.exceptions.MatchNotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,11 @@ class ProductionTest {
     @BeforeEach
     void setUp() {
         scoreboard = new ScoreBoard();
+    }
+
+    @AfterEach
+    void tearDown() {
+        scoreboard.getScoreBoards().clear();
     }
 
     @Test
