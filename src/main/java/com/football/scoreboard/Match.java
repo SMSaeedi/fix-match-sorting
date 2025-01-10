@@ -1,11 +1,11 @@
 package com.football.scoreboard;
 
 public class Match {
-    private final String homeTeam;
-    private final String awayTeam;
+    private String homeTeam;
+    private String awayTeam;
     private int homeScore;
     private int awayScore;
-    private final long startTime;
+    private long startTime;
 
     public Match(String homeTeam, String awayTeam, long startTime) {
         this.homeTeam = homeTeam;
@@ -13,6 +13,11 @@ public class Match {
         this.homeScore = 0;
         this.awayScore = 0;
         this.startTime = startTime;
+    }
+
+    public Match(String homeTeam, int homeScore) {
+        this.awayTeam = awayTeam;
+        this.homeScore = 0;
     }
 
     public String getHomeTeam() {

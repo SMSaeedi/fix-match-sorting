@@ -2,7 +2,6 @@ package com.football.scoreboard;
 
 import com.football.scoreboard.exceptions.MatchAlreadyExistsException;
 import com.football.scoreboard.exceptions.MatchNotFoundException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,17 +9,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ScoreBoardTest {
+class ProductionTest {
     private ScoreBoard scoreboard;
 
     @BeforeEach
     void setUp() {
         scoreboard = new ScoreBoard();
-    }
-
-    @AfterEach
-    void tearDown() {
-        scoreboard.clear();
     }
 
     @Test
@@ -96,7 +90,7 @@ class ScoreBoardTest {
     }
 
     @Test
-    void grayTestUpdateScore_negativeScores() {
+    void grayTestUpdateScore_negativeHomeScore() {
         scoreboard.startMatch("Mexico", "Canada");
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
             scoreboard.updateScore("Mexico", "Canada", -3, 5);
@@ -105,27 +99,67 @@ class ScoreBoardTest {
     }
 
     @Test
+    void grayTestUpdateScore_negativeAwayScore() {
+        scoreboard.startMatch("Mexico", "Canada");
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            scoreboard.updateScore("Mexico", "Canada", 3, -5);
+        });
+        assertEquals("Scores cannot be negative.", thrown.getMessage());
+    }
+
+    @Test
+    void getScore_givenTheTeamName() {
+        scoreboard.startMatch("Iran", "UAE");
+        int score = scoreboard.getScore("Iran");
+        assertEquals(0, score);
+    }
+
+    @Test
+    void testGetScore_NullHomeTeam() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            scoreboard.getScore(null);
+        });
+        assertEquals("Team name cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void testGetScore_EmptyHomeTeam() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            scoreboard.getScore("");
+        });
+        assertEquals("Team name cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void testGetScore_MatchNotFound() {
+        MatchNotFoundException exception = assertThrows(MatchNotFoundException.class, () -> {
+            scoreboard.getScore("UnknownTeam");
+        });
+        assertEquals("Match not found.", exception.getMessage());
+    }
+
+    @Test
     void grayTestUpdateScore_MatchNotFound() {
-        MatchNotFoundException thrown = assertThrows(MatchNotFoundException.class, () -> {
+        MatchNotFoundException exception = assertThrows(MatchNotFoundException.class, () -> {
             scoreboard.updateScore("UAE", "Iran", 2, 2);
         });
-        assertEquals("Match not found.", thrown.getMessage());
+        assertEquals("Match not found.", exception.getMessage());
     }
 
     @Test
     void grayTestFinishGame_MatchNotFound() {
-        MatchNotFoundException thrown = assertThrows(MatchNotFoundException.class, () -> {
+        MatchNotFoundException exception = assertThrows(MatchNotFoundException.class, () -> {
             scoreboard.finishMatch("China", "Turkey");
         });
-        assertEquals("Match not found.", thrown.getMessage());
+        assertEquals("Match not found.", exception.getMessage());
     }
 
     @Test
     void grayTestStartGame_MatchAlreadyExists() {
         scoreboard.startMatch("Mexico", "Canada");
-        MatchAlreadyExistsException thrown = assertThrows(MatchAlreadyExistsException.class, () -> {
+        MatchAlreadyExistsException exception = assertThrows(MatchAlreadyExistsException.class, () -> {
             scoreboard.startMatch("Mexico", "Canada");
         });
-        assertEquals("This Match is already in progress.", thrown.getMessage());
+        assertEquals("This Match is already in progress.", exception.getMessage());
     }
 }
