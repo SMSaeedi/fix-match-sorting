@@ -32,7 +32,7 @@ and get a score boards of ongoing matches.
 
 ## How to Run
 1. Clone the repository.
-2. Run `ScoreBoardTest` for unit tests.
+2. Run `ProductionTest` for unit tests.
 
 ## Clean and Build the Project
 - mvn clean install
